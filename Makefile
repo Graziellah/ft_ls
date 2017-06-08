@@ -6,19 +6,19 @@
 #    By: ghippoda <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/01/12 22:31:41 by ghippoda          #+#    #+#              #
-#    Updated: 2017/05/31 22:10:42 by ghippoda         ###   ########.fr        #
+#    Updated: 2017/06/08 02:30:02 by ghippoda         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = ft_ls
 
-SRCS = ./srcs/test.c ./srcs/option.c\
+SRCS = ./srcs/test.c ./srcs/option.c ./srcs/file_list.c\
 
 FLAGS = -Wall -Wextra -Werror -Ofast
 
 FLAGS_LIB = -L./libft -lft
 
-OBJ = ./srcs/test.o ./srcs/option.o
+OBJ = ./srcs/test.o ./srcs/option.o ./srcs/file_list.o
 
 HEADER = ./include/
 

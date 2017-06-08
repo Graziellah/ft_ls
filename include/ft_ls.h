@@ -6,7 +6,7 @@
 /*   By: ghippoda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/22 18:21:22 by ghippoda          #+#    #+#             */
-/*   Updated: 2017/06/01 16:22:03 by ghippoda         ###   ########.fr       */
+/*   Updated: 2017/06/08 06:42:46 by ghippoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ typedef struct		s_file
 	struct dirent	*sd;
 	struct stat		buf;
 	char			*time;
+	char			*s;
 	struct s_file	*next;
 }					t_file;
 
@@ -47,11 +48,13 @@ typedef struct		s_option
 	int				rev;
 	int				a;
 	int				time;
+	int				inode;
 }					t_option;
 
-void				open_dir(char *str, t_option *op);
+void				open_dir(char *str, t_file *list, t_option *op);
 t_option			init_op();
 t_option			check_option(char *str);
 int					option_off_on(t_option op);
-
+t_file				*ft_new_file(struct dirent *info, char *str);
+t_file				*ft_create_list(char *str);
 #endif

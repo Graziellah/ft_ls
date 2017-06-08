@@ -6,7 +6,7 @@
 /*   By: ghippoda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/31 21:54:28 by ghippoda          #+#    #+#             */
-/*   Updated: 2017/06/06 15:30:42 by ghippoda         ###   ########.fr       */
+/*   Updated: 2017/06/08 01:41:36 by ghippoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ t_option		check_option(char *str)
 			op.a = 1;
 		if (str[i] == 't')
 			op.time = 1;
+		if(str[i] == 'i')
+			op.inode = 1;
 		i++;
 	}
 	return(op);
@@ -50,12 +52,14 @@ t_option		init_op()
 	op.rev = 0;
 	op.a = 0;
 	op.time = 0;
+	op.inode = 0;
 	return (op);
 }
 
 int		option_off_on(t_option op)
 {
-	if (op.rec == 1 || op.list == 1 || op.rev == 1 || op.a == 1 || op.time == 1)
+	if (op.rec == 1 || op.list == 1 || op.rev == 1 || op.a == 1 || op.time == 1 ||
+			op.inode == 1)
 		return(1);
 	return(0);
 }
