@@ -6,7 +6,7 @@
 #    By: ghippoda <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/11 14:32:22 by ghippoda          #+#    #+#              #
-#    Updated: 2017/04/25 14:42:12 by ghippoda         ###   ########.fr        #
+#    Updated: 2017/09/08 16:42:27 by ghippoda         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,8 @@ SRCS = ft_isalnum.c ft_isalpha.c ft_isascii.c ft_isdigit.c \
 	   ft_lstadd.c ft_lstdel.c ft_lstdelone.c ft_lstiter.c ft_lstmap.c \
 	   ft_lstnew.c ft_intlen.c ft_swap.c ft_strrev.c ft_strcmp_pos.c \
 	   ft_sqrt.c ft_range.c ft_is_prime.c ft_search_replace.c ft_strjoinf.c \
-	   ft_strsubf.c get_next_line.c ft_strmerge.c
+	   ft_strsubf.c get_next_line.c ft_strmerge.c ft_recursive_power.c \
+	   ft_intlen.c
 
 FLAGS = -c -Wall -Werror -Wextra
 
@@ -46,22 +47,28 @@ OBJ  = ft_isalnum.o ft_isalpha.o ft_isascii.o ft_isdigit.o \
 	   ft_lstadd.o ft_lstdel.o ft_lstdelone.o ft_lstiter.o ft_lstmap.o \
 	   ft_lstnew.o ft_intlen.o ft_swap.o ft_strrev.o ft_strcmp_pos.o \
 	   ft_sqrt.o ft_range.o ft_is_prime.o ft_search_replace.o ft_strjoinf.o \
-	   ft_strsubf.o get_next_line.o ft_strmerge.o
+	   ft_strsubf.o get_next_line.o ft_strmerge.o ft_recursive_power.o \
+	   ft_intlen.o
 
 HEADER = libft.h
 
 all: $(NAME)
 
-$(NAME) :
-	gcc $(FLAGS) $(SRCS) -I$(HEADER)
-	ar rc $(NAME) $(OBJ)
-	ranlib $(NAME)
+$(NAME) : $(SRCS)
+	@echo "Compilation de la libft"
+	@gcc $(FLAGS) $(SRCS) -I$(HEADER)
+	@ar rc $(NAME) $(OBJ)
+	@ranlib $(NAME)
+	@echo "Libft Compilee"
+
+%o: %c
+	@gcc $(FLAGS) -I$(HEADER) -o $@ -c $<
 
 clean:
-	/bin/rm -f $(OBJ)
+	@/bin/rm -f $(OBJ)
 
 fclean:clean
-	/bin/rm -f $(NAME)
+	@/bin/rm -f $(NAME)
 	
 re:fclean all
 

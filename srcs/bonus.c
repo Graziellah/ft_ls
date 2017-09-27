@@ -1,22 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstdelone.c                                     :+:      :+:    :+:   */
+/*   bonus.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ghippoda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/21 15:38:17 by ghippoda          #+#    #+#             */
-/*   Updated: 2017/07/22 17:59:28 by ghippoda         ###   ########.fr       */
+/*   Created: 2017/09/21 14:11:12 by ghippoda          #+#    #+#             */
+/*   Updated: 2017/09/21 14:11:38 by ghippoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../includes/ft_ls.h"
 
-void	ft_lstdelone(t_list **alst, void (*del)(void*, size_t))
+void	aff_inode(ino_t d_ino)
 {
-	if (del == NULL || alst == NULL)
-		return ;
-	del((*alst)->content, (*alst)->content_size);
-	free(*alst);
-	*alst = NULL;
+	ft_putnbr(d_ino);
+	ft_putchar(' ');
 }

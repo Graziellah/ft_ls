@@ -1,22 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstdelone.c                                     :+:      :+:    :+:   */
+/*   ft_recursive_power.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ghippoda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/21 15:38:17 by ghippoda          #+#    #+#             */
-/*   Updated: 2017/07/22 17:59:28 by ghippoda         ###   ########.fr       */
+/*   Created: 2016/08/11 20:24:45 by ghippoda          #+#    #+#             */
+/*   Updated: 2016/08/11 21:38:59 by ghippoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-
-void	ft_lstdelone(t_list **alst, void (*del)(void*, size_t))
+int		ft_recursive_power(int nb, int power)
 {
-	if (del == NULL || alst == NULL)
-		return ;
-	del((*alst)->content, (*alst)->content_size);
-	free(*alst);
-	*alst = NULL;
+	if (power < 0)
+		return (0);
+	if (power == 0)
+		return (1);
+	return (nb * (ft_recursive_power(nb, power - 1)));
 }

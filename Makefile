@@ -6,21 +6,27 @@
 #    By: ghippoda <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/01/12 22:31:41 by ghippoda          #+#    #+#              #
-#    Updated: 2017/06/08 02:30:02 by ghippoda         ###   ########.fr        #
+#    Updated: 2017/09/21 14:08:01 by ghippoda         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = ft_ls
 
-SRCS = ./srcs/test.c ./srcs/option.c ./srcs/file_list.c\
+SRCS = ./srcs/main.c ./srcs/option.c ./srcs/file_list.c ./srcs/access.c\
+	   ./srcs/aff.c ./srcs/manage_list.c ./srcs/help_aff.c ./srcs/aff_tool.c\
+	   ./srcs/sort_tool.c ./srcs/tool_main.c ./srcs/sort_arg.c \
+	   ./srcs/sort_arg_tool.c ./srcs/bonus.c
 
-FLAGS = -Wall -Wextra -Werror -Ofast
+FLAGS = -Wall -Wextra -Werror
 
 FLAGS_LIB = -L./libft -lft
 
-OBJ = ./srcs/test.o ./srcs/option.o ./srcs/file_list.o
+OBJ = ./srcs/main.o ./srcs/option.o ./srcs/file_list.o ./srcs/access.o \
+	  ./srcs/aff.o ./srcs/manage_list.o ./srcs/help_aff.o ./srcs/aff_tool.o\
+	   ./srcs/sort_tool.o ./srcs/tool_main.o ./srcs/sort_arg.o \
+	   ./srcs/sort_arg_tool.o ./srcs/bonus.o
 
-HEADER = ./include/
+HEADER = ./includes/
 
 LIB = libft.a
 
@@ -29,17 +35,22 @@ LIB = libft.a
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	make -C libft
-	gcc $(FLAGS_LIB) $(OBJ) -o $(NAME)
+	@echo "Compilation du projet"
+	@make -C libft
+	@echo "apres Compilation libft"
+	@gcc $(FLAGS_LIB) $(OBJ) -o $(NAME)
+	@echo "Done"
 
 %o: %c
-	gcc $(FLAGS) -I$(HEADER) -o $@ -c $<
+	@gcc -g -I$(HEADER) -o $@ -c $<
 
 clean:
-	/bin/rm -f $(OBJ)
+	@/bin/rm -f $(OBJ)
+	@make clean -C libft
 
 fclean: clean
-	/bin/rm -f $(NAME)
-	make fclean -C libft
+	@/bin/rm -f $(NAME)
+	@make fclean -C libft
+	@echo "Nettoyage effectue"
 
 re: fclean all

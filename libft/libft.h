@@ -6,7 +6,7 @@
 /*   By: ghippoda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/09 10:20:46 by ghippoda          #+#    #+#             */
-/*   Updated: 2017/05/30 15:55:48 by ghippoda         ###   ########.fr       */
+/*   Updated: 2017/07/11 14:35:34 by ghippoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ void				ft_putchar_fd(char c, int fd);
 void				ft_putstr_fd(char const *s, int fd);
 void				ft_putendl_fd(char const *s, int fd);
 void				ft_putnbr_fd(int n, int fd);
+int					ft_recursive_power(int nb, int power);
 
 typedef struct		s_list
 {

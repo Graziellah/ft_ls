@@ -6,23 +6,85 @@
 /*   By: ghippoda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/08 01:41:56 by ghippoda          #+#    #+#             */
-/*   Updated: 2017/06/08 06:55:58 by ghippoda         ###   ########.fr       */
+/*   Updated: 2017/09/23 18:52:24 by ghippoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/ft_ls.h"
+#include "../includes/ft_ls.h"
 
-t_file		*ft_new_file(struct dirent *info, char *str)
+char		*create_path_name(char *child, char *parent)
+{
+	char	*new_path;
+
+	new_path = ft_strjoin(parent, "/");
+	new_path = ft_strjoin(new_path, child);
+	return (new_path);
+}
+
+t_file		*ft_new_file(struct dirent *info, char *str, int option)
 {
 	t_file		*new;
+	struct stat	buf;
+	struct stat	bufl;
+	char		*path;
 
-//	new = init_piece();
+	path = create_path_name(info->d_name, str);
 	if (!(new = (t_file*)malloc(sizeof(*new))))
-		return NULL;
-	new->sd = info;
-	new->s = str;
+		return (NULL);
+	if (option == 1)
+		lstat(str, &buf);
+	else
+		lstat(path, &buf);
+	new->buf = buf;
+	new->d_type = info->d_type;
+	new->d_ino = info->d_ino;
+	new->s = ft_strdup(info->d_name);
+	new->parent = str;
+	new->time = "";
 	new->next = NULL;
 	return (new);
+}
+
+t_file		*get_name(char *str)
+{
+	struct stat		st;
+	t_file			*new;
+	t_file			*tmp;
+
+	if (!(tmp = (t_file*)malloc(sizeof(*tmp))))
+		return (NULL);
+	if (!(new = (t_file*)malloc(sizeof(*new))))
+		return (NULL);
+	tmp = NULL;
+	if (lstat(str, &st) != 0)
+	{
+		fprintf(stderr, "%X\n", errno);
+		exit(EXIT_FAILURE);
+	}
+	new->buf = st;
+	new->d_type = DT_LNK;
+	new->d_ino = st.st_ino;
+	new->s = ft_strdup(str);
+	new->parent = "";
+	tmp = new;
+	new->next = NULL;
+	return (tmp);
+}
+
+int			check_dev(char **str)
+{
+	int		dev;
+
+	dev = 0;
+	if (ft_strcmp(*str, "/dev") == 0)
+	{
+		RED;
+		ft_putstr("Dans check dev\n");
+		WHITE;
+		*str = ft_strjoin(*str, "/");
+		dev = 1;
+	}
+	return (dev);
 }
 
 t_file		*ft_create_list(char *str)
@@ -31,51 +93,25 @@ t_file		*ft_create_list(char *str)
 	t_file			*new;
 	t_file			*tmp;
 	DIR				*dir;
+	int				dev;
 
-	sd = NULL;
 	if (!(tmp = (t_file*)malloc(sizeof(*tmp))))
-		return NULL;
-	tmp = NULL;
-	dir = opendir(str);
-	sd = readdir(dir);
-	new = ft_new_file(sd, str);
+		return (NULL);
+	if (!(dir = opendir(str)))
+		return (NULL);
+	dev = check_dev(&str);
+	sd = readdir(dir );
+	new = ft_new_file(sd, str, dev);
 	tmp = new;
-	while((sd = readdir(dir)) != NULL)
+	while ((sd = readdir(dir)) != NULL)
 	{
-//	printf("name TMP: %s\n", tmp->sd->d_name);
-//	tmp = tmp->next;
-		new->next = ft_new_file(sd, str);
-	//	printf("name: %s\n", new->sd->d_name);
+		if (dev == 1)
+			new->next = ft_new_file(sd, ft_strjoin(str, sd->d_name), dev);
+		else
+			new->next = ft_new_file(sd, str, dev);
 		new = new->next;
 	}
 	new->next = NULL;
 	closedir(dir);
-/*	printf("name TMP: %s\n", tmp->sd->d_name);
-	tmp = tmp->next;
-	printf("name TMP: %s\n", tmp->sd->d_name);
-	tmp = tmp->next;
-	printf("name TMP: %s\n", tmp->sd->d_name);
-	tmp = tmp->next;
-	while(tmp != NULL)
-	{
-		BLUE;
-		printf("name tmp: %s\n", tmp->sd->d_name);
-		tmp = tmp->next;
-	}
-*/	return(tmp);
+	return (tmp);
 }
-
-
-/*
-int			main()
-{
-	t_file		*hey;
-
-	hey = ft_create_list(".");
-	while(hey != NULL)
-	{
-		printf("name: %s type: %d\n", hey->sd->d_name, hey->sd->d_type);
-		hey = hey->next;
-	}
-	return (0);
-}*/
