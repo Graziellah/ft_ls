@@ -6,7 +6,7 @@
 /*   By: ghippoda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/08 01:41:56 by ghippoda          #+#    #+#             */
-/*   Updated: 2017/09/23 18:52:24 by ghippoda         ###   ########.fr       */
+/*   Updated: 2017/09/28 15:05:23 by ghippoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,7 @@ t_file		*get_name(char *str)
 		return (NULL);
 	tmp = NULL;
 	if (lstat(str, &st) != 0)
-	{
-		fprintf(stderr, "%X\n", errno);
 		exit(EXIT_FAILURE);
-	}
 	new->buf = st;
 	new->d_type = DT_LNK;
 	new->d_ino = st.st_ino;
@@ -100,7 +97,7 @@ t_file		*ft_create_list(char *str)
 	if (!(dir = opendir(str)))
 		return (NULL);
 	dev = check_dev(&str);
-	sd = readdir(dir );
+	sd = readdir(dir);
 	new = ft_new_file(sd, str, dev);
 	tmp = new;
 	while ((sd = readdir(dir)) != NULL)

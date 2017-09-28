@@ -6,7 +6,7 @@
 /*   By: ghippoda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/30 21:46:18 by ghippoda          #+#    #+#             */
-/*   Updated: 2017/09/21 15:47:43 by ghippoda         ###   ########.fr       */
+/*   Updated: 2017/09/28 16:45:32 by ghippoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,11 @@ void	recursive(t_file *list, t_option *op)
 	str = NULL;
 	while (list != NULL)
 	{
-		if (ft_strcmp(list->s, ".") == 0 || ft_strcmp(list->s, "..") == 0)
+		if ((ft_strcmp(list->s, ".") == 0 || ft_strcmp(list->s, "..") == 0) && list->d_type != DT_DIR)
+		{
 			list = list->next;
+			continue;
+		}
 		if (list->s[0] != '.' && list->d_type == DT_DIR && op->a == 0)
 		{
 			str = ft_strjoin(list->parent, "/");
@@ -85,7 +88,7 @@ void	recursive(t_file *list, t_option *op)
 			open_dir(str, list2, op);
 		}
 		else if (list->d_type == DT_DIR && op->a == 1 &&
-				list->s[1] != '.')
+				list->s[1] != '.' && ft_strlen(list->s) > 2)
 		{
 			str = ft_strjoin(list->parent, "/");
 			str = ft_strjoin(str, list->s);
