@@ -6,7 +6,7 @@
 /*   By: ghippoda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/30 21:15:49 by ghippoda          #+#    #+#             */
-/*   Updated: 2017/10/02 16:24:28 by ghippoda         ###   ########.fr       */
+/*   Updated: 2017/10/02 16:40:06 by ghippoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,7 @@ void		main_loop(int i, int argc, char **argv, t_option op)
 			error_type(argv[i], p);
 		else
 		{
-			if (op.rec == 1 || (option_off_on(op) == 1 && argc > 3 && p != 4) ||
-					(option_off_on(op) == 0 && argc > 2 && p != 4) || argc != 1)
-				print_name(argv[i]);
+			aff_name(op, argc, argv[i], p);
 			if (p == 4)
 				list = get_name(argv[i]);
 			else

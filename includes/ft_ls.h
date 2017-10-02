@@ -6,7 +6,7 @@
 /*   By: ghippoda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/22 18:21:22 by ghippoda          #+#    #+#             */
-/*   Updated: 2017/10/02 15:16:38 by ghippoda         ###   ########.fr       */
+/*   Updated: 2017/10/02 16:48:27 by ghippoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,8 @@ typedef struct		s_option
 	int				line;
 }					t_option;
 
+void				recursive2(char *parent, char *child, t_option *op);
+void				aff_name(t_option op, int argc, char *argv, int p);
 int					check_list(t_file *list, t_option *op);
 void				aff_inode(ino_t d_ino);
 void				new_sort_ascii(t_file **ls);

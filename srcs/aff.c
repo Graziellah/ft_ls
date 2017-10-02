@@ -6,7 +6,7 @@
 /*   By: ghippoda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/30 21:46:18 by ghippoda          #+#    #+#             */
-/*   Updated: 2017/10/02 15:42:14 by ghippoda         ###   ########.fr       */
+/*   Updated: 2017/10/02 16:48:36 by ghippoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,32 +69,19 @@ void	aff_all(t_file *list, t_option *op)
 
 void	recursive(t_file *list, t_option *op)
 {
-	t_file	*list2;
-	char	*str;
-
-	str = NULL;
 	while (list != NULL)
 	{
-		if ((ft_strcmp(list->s, ".") == 0 || ft_strcmp(list->s, "..") == 0) && list->d_type != DT_DIR)
+		if ((ft_strcmp(list->s, ".") == 0 || ft_strcmp(list->s, "..") == 0)
+				&& list->d_type != DT_DIR)
 		{
 			list = list->next;
 			continue;
 		}
 		if (list->s[0] != '.' && list->d_type == DT_DIR && op->a == 0)
-		{
-			str = ft_strjoin(list->parent, "/");
-			str = ft_strjoin(str, list->s);
-			list2 = ft_create_list(str);
-			open_dir(str, list2, op);
-		}
+			recursive2(list->parent, list->s, op);
 		else if (list->d_type == DT_DIR && op->a == 1 &&
 				list->s[1] != '.' && ft_strlen(list->s) > 2)
-		{
-			str = ft_strjoin(list->parent, "/");
-			str = ft_strjoin(str, list->s);
-			list2 = ft_create_list(str);
-			open_dir(str, list2, op);
-		}
+			recursive2(list->parent, list->s, op);
 		list = list->next;
 	}
 }
