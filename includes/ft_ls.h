@@ -6,7 +6,7 @@
 /*   By: ghippoda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/22 18:21:22 by ghippoda          #+#    #+#             */
-/*   Updated: 2017/09/21 16:15:45 by ghippoda         ###   ########.fr       */
+/*   Updated: 2017/10/02 15:16:38 by ghippoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,8 @@ typedef struct		s_option
 	int				line;
 }					t_option;
 
-void	aff_inode(ino_t d_ino);
+int					check_list(t_file *list, t_option *op);
+void				aff_inode(ino_t d_ino);
 void				new_sort_ascii(t_file **ls);
 char				**rev_tab_end(char **tab, int nb);
 void				print_space(char **str, int argc, int i);

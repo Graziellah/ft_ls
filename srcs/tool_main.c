@@ -6,7 +6,7 @@
 /*   By: ghippoda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/09 16:18:54 by ghippoda          #+#    #+#             */
-/*   Updated: 2017/09/17 15:59:27 by ghippoda         ###   ########.fr       */
+/*   Updated: 2017/10/02 15:27:08 by ghippoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ void	print_name(char *str)
 	lstat(str, &buf);
 	if ((S_ISDIR(buf.st_mode)))
 	{
+		YELLOW;
 		ft_putstr(str);
 		ft_putstr(":\n");
 	}

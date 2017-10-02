@@ -6,7 +6,7 @@
 /*   By: ghippoda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/30 21:15:49 by ghippoda          #+#    #+#             */
-/*   Updated: 2017/10/02 15:07:40 by ghippoda         ###   ########.fr       */
+/*   Updated: 2017/10/02 16:24:28 by ghippoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,22 +58,6 @@ int			display_ls_option_only(t_option op, char **argv)
 	return (0);
 }
 
-int			check_list(t_file *list, t_option *op)
-{
-	t_file	*tmp;
-
-	tmp = list;
-	if (op->a == 1)
-		return (0);
-	while (tmp != NULL)
-	{
-		if (tmp->s[0] != '.')
-			return(1);
-		tmp = tmp->next;
-	}
-	return (0);
-}
-
 void		main_loop(int i, int argc, char **argv, t_option op)
 {
 	t_file		*list;
@@ -83,7 +67,6 @@ void		main_loop(int i, int argc, char **argv, t_option op)
 	while (i < argc)
 	{
 		p = -1;
-		YELLOW;
 		p = check_argv(argv[i]);
 		if (p == NONE || p == ACCESS)
 			error_type(argv[i], p);
