@@ -6,7 +6,7 @@
 /*   By: ghippoda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/30 21:15:49 by ghippoda          #+#    #+#             */
-/*   Updated: 2017/09/21 15:26:31 by ghippoda         ###   ########.fr       */
+/*   Updated: 2017/10/02 15:07:40 by ghippoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ int			display_simple_ls(t_option op)
 
 	list = ft_create_list(".");
 	aff_list(list, &op);
+	if (list == NULL)
+		return (0);
 	ft_putstr("\n");
 	return (0);
 }
@@ -53,6 +55,22 @@ int			display_ls_option_only(t_option op, char **argv)
 		list = ft_create_list(argv[i]);
 	aff_list(list, &op);
 	ft_putstr("\n");
+	return (0);
+}
+
+int			check_list(t_file *list, t_option *op)
+{
+	t_file	*tmp;
+
+	tmp = list;
+	if (op->a == 1)
+		return (0);
+	while (tmp != NULL)
+	{
+		if (tmp->s[0] != '.')
+			return(1);
+		tmp = tmp->next;
+	}
 	return (0);
 }
 
@@ -78,8 +96,11 @@ void		main_loop(int i, int argc, char **argv, t_option op)
 				list = get_name(argv[i]);
 			else
 				list = ft_create_list(argv[i]);
-			aff_list(list, &op);
-			print_space(argv, argc, i);
+			if ((check_list(list, &op) == 1 && argc == 1) || argc >= 2)
+			{
+				aff_list(list, &op);
+				print_space(argv, argc, i);
+			}
 		}
 		i++;
 	}
