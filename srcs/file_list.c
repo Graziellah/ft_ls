@@ -6,7 +6,7 @@
 /*   By: ghippoda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/08 01:41:56 by ghippoda          #+#    #+#             */
-/*   Updated: 2017/10/02 14:25:24 by ghippoda         ###   ########.fr       */
+/*   Updated: 2017/10/03 13:44:27 by ghippoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ t_file		*get_name(char *str)
 	if (lstat(str, &st) != 0)
 		exit(EXIT_FAILURE);
 	new->buf = st;
-	new->d_type = DT_LNK;
+	new->d_type = get_type(st);
 	new->d_ino = st.st_ino;
 	new->s = ft_strdup(str);
 	new->parent = "";
@@ -75,8 +75,6 @@ int			check_dev(char **str)
 	dev = 0;
 	if (ft_strcmp(*str, "/dev") == 0)
 	{
-		RED;
-		ft_putstr("Dans check dev\n");
 		WHITE;
 		*str = ft_strjoin(*str, "/");
 		dev = 1;

@@ -6,7 +6,7 @@
 /*   By: ghippoda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/30 21:58:44 by ghippoda          #+#    #+#             */
-/*   Updated: 2017/09/21 15:48:18 by ghippoda         ###   ########.fr       */
+/*   Updated: 2017/10/17 16:10:28 by ghippoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,15 +46,16 @@ void	end(int type)
 
 void	link_path(t_file *list)
 {
-	char	target_path[256];
+	char	target_path[1024];
 	char	*link_path;
 	int		len;
 
+	link_path = NULL;
 	if (list->parent[0] == '/' && list->parent[1] == 'd' && list->parent[2]
 			== 'e' && list->parent[3] == 'v')
 		link_path = list->parent;
 	else
-		link_path = list->s;
+		link_path = create_path_name(list->s, list->parent);
 	ft_putstr(" -> ");
 	len = readlink(link_path, target_path, sizeof(target_path));
 	target_path[len] = '\0';
@@ -77,10 +78,7 @@ void	aff_visible2(t_option *op, t_file *list, int type)
 		link_path(list);
 	if (op->end == 1)
 		end(type);
-	if ((op->list == 1 || op->line == 1) && list->next != NULL)
-		ft_putstr("\n");
-	else
-		ft_putstr("\t");
+	ft_putstr("\n");
 	WHITE;
 }
 

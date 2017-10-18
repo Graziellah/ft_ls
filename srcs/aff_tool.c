@@ -6,65 +6,13 @@
 /*   By: ghippoda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/30 21:52:27 by ghippoda          #+#    #+#             */
-/*   Updated: 2017/09/21 18:03:32 by ghippoda         ###   ########.fr       */
+/*   Updated: 2017/10/15 22:56:07 by ghippoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_ls.h"
 
-void	aff_right(struct stat buf)
-{
-	int		mode;
-
-	mode = buf.st_mode & (MODE);
-	if (S_ISREG(buf.st_mode))
-		ft_putchar('-');
-	else if (S_ISCHR(buf.st_mode))
-		ft_putchar('c');
-	else if (S_ISLNK(buf.st_mode))
-		ft_putchar('l');
-	else if (S_ISBLK(buf.st_mode))
-		ft_putchar('b');
-	else if (S_ISFIFO(buf.st_mode))
-		ft_putchar('p');
-	else if (S_ISDIR(buf.st_mode))
-		ft_putchar('d');
-	else if (S_ISSOCK(buf.st_mode))
-		ft_putchar('s');
-	ft_putchar(isuid(buf));
-	ft_putchar(isgid(buf));
-	ft_putchar(isvtx(buf));
-}
-
-void	aff_group(struct stat buf)
-{
-	struct passwd	*pw;
-	struct group	*gr;
-	int				len;
-	int				i;
-
-	len = 1;
-	i = 0;
-	pw = getpwuid(buf.st_uid);
-	gr = getgrgid(buf.st_gid);
-	ft_putstr(pw->pw_name);
-	len = MAX - ft_strlen(pw->pw_name) + 1;
-	while (len >= 0)
-	{
-		ft_putchar(' ');
-		len--;
-	}
-	ft_putstr(gr->gr_name);
-	len = MAX - ft_strlen(gr->gr_name) + 1;
-	while (len >= 0)
-	{
-		ft_putchar(' ');
-		len--;
-	}
-	ft_putstr(" ");
-}
-
-void	aff_majeur_mineur(struct stat buf)
+void		aff_majeur_mineur(struct stat buf)
 {
 	if (major(buf.st_rdev) >= 0)
 		ft_putnbr(major(buf.st_rdev));
@@ -79,11 +27,52 @@ void	aff_majeur_mineur(struct stat buf)
 	ft_putchar('\t');
 }
 
-void	aff_info(struct stat buf)
+static void	aff_time(struct stat buf)
 {
 	char	mtime[100];
-	char	*time;
+	char	*times;
+	time_t	now;
+	double	diff;
+	char	*year;
 
+	now = time(&now);
+	diff = difftime(now, buf.st_mtime);
+	ft_strcpy(mtime, ctime(&buf.st_mtime));
+	if (diff < MONTHS)
+	{
+		times = ft_strsub(mtime, 4, 12);
+		ft_putstr(times);
+	}
+	else
+	{
+		times = ft_strsub(mtime, 4, 7);
+		year = ft_strsub(mtime, 20, 4);
+		ft_putstr(times);
+		ft_putchar(' ');
+		ft_putstr(year);
+	}
+}
+
+void		aff_size(struct stat buf)
+{
+	int		len;
+
+	ft_putchar('\t');
+	ft_putnbr(buf.st_size);
+	len = ft_intlen(buf.st_size);
+	if (len < 9)
+	{
+		while (len <= 9)
+		{
+			ft_putchar(' ');
+			len++;
+		}
+	}
+	ft_putchar(' ');
+}
+
+void		aff_info(struct stat buf)
+{
 	aff_right(buf);
 	ft_putstr("\t");
 	ft_putnbr(buf.st_nlink);
@@ -93,19 +82,13 @@ void	aff_info(struct stat buf)
 	if (S_ISBLK(buf.st_mode) || S_ISCHR(buf.st_mode))
 		aff_majeur_mineur(buf);
 	else
-	{
-		ft_putchar('\t');
-		ft_putnbr(buf.st_size);
-		ft_putchar('\t');
-	}
+		aff_size(buf);
 	ft_putstr("\t");
-	ft_strcpy(mtime, ctime(&buf.st_mtime));
-	time = ft_strsub(mtime, 4, 12);
-	ft_putstr(time);
+	aff_time(buf);
 	ft_putstr("  ");
 }
 
-void	aff_total(t_file *list, t_option *op)
+void		aff_total(t_file *list, t_option *op)
 {
 	int total;
 
@@ -114,8 +97,9 @@ void	aff_total(t_file *list, t_option *op)
 	while (list != NULL)
 	{
 		if (op->a == 0 && list->s[0] == '.')
-			list = list->next;
-		total += list->buf.st_blocks;
+			;
+		else
+			total += list->buf.st_blocks;
 		list = list->next;
 	}
 	ft_putstr("total ");

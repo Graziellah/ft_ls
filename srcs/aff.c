@@ -6,7 +6,7 @@
 /*   By: ghippoda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/30 21:46:18 by ghippoda          #+#    #+#             */
-/*   Updated: 2017/10/02 16:48:36 by ghippoda         ###   ########.fr       */
+/*   Updated: 2017/10/12 12:29:51 by ghippoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ void	aff_all(t_file *list, t_option *op)
 {
 	t_file	*tmp;
 
+	tmp = NULL;
 	tmp = list;
 	while (list != NULL)
 	{

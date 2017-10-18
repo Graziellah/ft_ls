@@ -6,7 +6,7 @@
 /*   By: ghippoda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/30 21:56:46 by ghippoda          #+#    #+#             */
-/*   Updated: 2017/09/21 15:48:06 by ghippoda         ###   ########.fr       */
+/*   Updated: 2017/10/04 14:14:33 by ghippoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,4 +70,28 @@ char	isvtx(struct stat st)
 		else
 			return ('-');
 	}
+}
+
+void	aff_right(struct stat buf)
+{
+	int		mode;
+
+	mode = buf.st_mode & (MODE);
+	if (S_ISREG(buf.st_mode))
+		ft_putchar('-');
+	else if (S_ISCHR(buf.st_mode))
+		ft_putchar('c');
+	else if (S_ISLNK(buf.st_mode))
+		ft_putchar('l');
+	else if (S_ISBLK(buf.st_mode))
+		ft_putchar('b');
+	else if (S_ISFIFO(buf.st_mode))
+		ft_putchar('p');
+	else if (S_ISDIR(buf.st_mode))
+		ft_putchar('d');
+	else if (S_ISSOCK(buf.st_mode))
+		ft_putchar('s');
+	ft_putchar(isuid(buf));
+	ft_putchar(isgid(buf));
+	ft_putchar(isvtx(buf));
 }

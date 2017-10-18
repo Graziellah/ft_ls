@@ -6,7 +6,7 @@
 /*   By: ghippoda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/09 16:18:54 by ghippoda          #+#    #+#             */
-/*   Updated: 2017/10/02 15:27:08 by ghippoda         ###   ########.fr       */
+/*   Updated: 2017/10/17 16:24:10 by ghippoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,13 @@ void	print_space(char **str, int argc, int i)
 {
 	struct stat	buf;
 
-	lstat(str[i], &buf);
-	if ((S_ISDIR(buf.st_mode)))
-		i + 1 < argc ? ft_putstr("\n\n") : ft_putstr("\n");
+	if (argc == i + 1)
+		;
 	else
 	{
 		lstat(str[i + 1], &buf);
 		if ((S_ISDIR(buf.st_mode)))
-			ft_putstr("\n\n");
-		else
-			(i + 1 < argc) ? ft_putstr(" ") : ft_putstr("\n");
+			ft_putstr("\n");
 	}
 }
 
@@ -34,7 +31,7 @@ void	print_name(char *str)
 	struct stat	buf;
 
 	lstat(str, &buf);
-	if ((S_ISDIR(buf.st_mode)))
+	if ((S_ISDIR(buf.st_mode)) || S_ISLNK(buf.st_mode))
 	{
 		YELLOW;
 		ft_putstr(str);
@@ -81,24 +78,24 @@ int		check_file(char *str)
 int		check_argv(char *str)
 {
 	DIR			*dir;
-	int			errno;
 	struct stat	st;
+	int			type;
 
-	errno = 0;
 	lstat(str, &st);
-	if (S_ISLNK(st.st_mode))
-		return (LINK);
-	if (!(dir = opendir(str)))
+	type = 0;
+	if (!S_ISDIR(st.st_mode))
 	{
-		if (check_file(str) != 1)
-		{
-			if (errno == EACCES)
-				return (ACCESS);
-			if (errno == ENOENT)
-				return (NONE);
-		}
-		return (0);
+		type = 5;
+		if (S_ISLNK(st.st_mode))
+			type = 4;
+	}
+	if (!(dir = opendir(str)) || type == 4)
+	{
+		if (check_file(str) != 1 || type == 4)
+			return (val_errno(type));
+		else
+			return (val_errno(type));
 	}
 	closedir(dir);
-	return (0);
+	return (type);
 }

@@ -6,7 +6,7 @@
 /*   By: ghippoda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/23 18:17:22 by ghippoda          #+#    #+#             */
-/*   Updated: 2017/09/12 20:36:45 by ghippoda         ###   ########.fr       */
+/*   Updated: 2017/10/10 13:25:11 by ghippoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,26 +57,22 @@ t_file		*reverse(t_file *ls)
 
 t_file		*sort_ascii(t_file *ls)
 {
-	t_file	*tmp;
-	t_file	*l2;
-	t_file	*tmp2;
+	t_file		*a;
+	t_file		*b;
+	t_file		*tmp;
 
-	l2 = ls->next;
-	tmp2 = l2;
 	tmp = ls;
-	while (l2 != NULL)
+	a = ls;
+	while (a)
 	{
-		if (ft_strcmp(ls->s, l2->s) > 0)
+		b = a->next;
+		while (b)
 		{
-			swap_file(&ls, &l2);
-			ls = tmp;
-			l2 = tmp2;
+			if (ft_strcmp(a->s, b->s) > 0)
+				swap_file(&a, &b);
+			b = b->next;
 		}
-		else
-		{
-			ls = ls->next;
-			l2 = ls->next;
-		}
+		a = a->next;
 	}
 	return (tmp);
 }

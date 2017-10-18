@@ -6,7 +6,7 @@
 /*   By: ghippoda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/22 18:21:22 by ghippoda          #+#    #+#             */
-/*   Updated: 2017/10/02 16:48:27 by ghippoda         ###   ########.fr       */
+/*   Updated: 2017/10/17 16:19:11 by ghippoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,9 @@
 # define NONE 2
 # define LINK 4
 # define MAX 10
+# define FILES 5
+# define TMP 4
+# define MONTHS 15778800
 # define MODE (S_IRWXU | S_IRUSR | S_IWUSR | S_IXUSR | S_IRWXG | S_IRGRP)
 # define MODE2 (S_IWGRP | S_IXGRP | S_IRWXO | S_IROTH | S_IWOTH | S_IXOTH)
 # include <stdio.h>
@@ -52,7 +55,7 @@
 # include <grp.h>
 # include <errno.h>
 # include "../libft/libft.h"
-# include <sys/acl.h>
+# include <time.h>
 
 typedef struct		s_file
 {
@@ -89,6 +92,19 @@ typedef struct		s_option
 	int				line;
 }					t_option;
 
+typedef struct		s_index
+{
+	int		nb;
+	int		j;
+}					t_index;
+
+int					val_errno(int type);
+int					check_type(int *type, struct stat buf);
+void				aff_files(char **str, int i, int argc);
+void				error_type(char *str, int type);
+char				*create_path_name(char *child, char *parent);
+void				aff_right(struct stat buf);
+unsigned char		get_type(struct stat st);
 void				recursive2(char *parent, char *child, t_option *op);
 void				aff_name(t_option op, int argc, char *argv, int p);
 int					check_list(t_file *list, t_option *op);

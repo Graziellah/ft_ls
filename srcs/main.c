@@ -6,7 +6,7 @@
 /*   By: ghippoda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/30 21:15:49 by ghippoda          #+#    #+#             */
-/*   Updated: 2017/10/02 16:40:06 by ghippoda         ###   ########.fr       */
+/*   Updated: 2017/10/17 16:15:24 by ghippoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ int			display_simple_ls(t_option op)
 	aff_list(list, &op);
 	if (list == NULL)
 		return (0);
-	ft_putstr("\n");
 	return (0);
 }
 
@@ -54,7 +53,6 @@ int			display_ls_option_only(t_option op, char **argv)
 	else
 		list = ft_create_list(argv[i]);
 	aff_list(list, &op);
-	ft_putstr("\n");
 	return (0);
 }
 
@@ -63,17 +61,17 @@ void		main_loop(int i, int argc, char **argv, t_option op)
 	t_file		*list;
 	int			p;
 
-	i = 0;
 	while (i < argc)
 	{
-		p = -1;
 		p = check_argv(argv[i]);
 		if (p == NONE || p == ACCESS)
 			error_type(argv[i], p);
+		if (p == FILES && op.list == 0)
+			aff_files(argv, i, argc);
 		else
 		{
 			aff_name(op, argc, argv[i], p);
-			if (p == 4)
+			if ((p == TMP || p == FILES) && op.list == 1)
 				list = get_name(argv[i]);
 			else
 				list = ft_create_list(argv[i]);
@@ -111,6 +109,7 @@ int			main(int argc, char **argv)
 		tab = sort_arg(argv, argc, op);
 	else
 		return (display_ls_option_only(op, argv));
+	i = 0;
 	main_loop(i, nb, tab, op);
 	return (0);
 }

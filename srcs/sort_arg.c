@@ -6,7 +6,7 @@
 /*   By: ghippoda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/05 13:37:46 by ghippoda          #+#    #+#             */
-/*   Updated: 2017/09/17 14:59:42 by ghippoda         ###   ########.fr       */
+/*   Updated: 2017/10/15 22:27:34 by ghippoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,31 +21,49 @@ void	swap_tab(char **tab1, char **tab2)
 	*tab2 = tmp;
 }
 
-char	**clean_tab(char **tab, int nb)
+char	**clean_tab2(char **tab2, char **tab, t_option *op, t_index info)
+{
+	int			i;
+	struct stat	lm;
+
+	i = 0;
+	while (i < info.nb)
+	{
+		lstat(tab[i], &lm);
+		if (S_ISDIR(lm.st_mode) || (S_ISLNK(lm.st_mode) && op->list == 0))
+		{
+			tab2[info.j] = ft_strdup(tab[i]);
+			info.j++;
+		}
+		i++;
+	}
+	tab2[info.j] = NULL;
+	return (tab2);
+}
+
+char	**clean_tab(char **tab, int nb, t_option *op)
 {
 	char		**tab2;
 	int			i;
-	int			j;
+	t_index		info;
 	struct stat	st;
 
 	i = 0;
-	j = -1;
-	tab2 = (char **)malloc(sizeof(char*) * nb);
-	while (i < nb)
+	info.j = 0;
+	info.nb = nb;
+	tab2 = (char **)malloc(sizeof(char*) * nb + 1);
+	while (i < info.nb)
 	{
 		lstat(tab[i], &st);
-		if (!(S_ISDIR(st.st_mode)))
-			tab2[++j] = ft_strdup(tab[i]);
+		if ((!(S_ISDIR(st.st_mode)) && !(S_ISLNK(st.st_mode))) ||
+				(S_ISLNK(st.st_mode) && op->list == 1))
+		{
+			tab2[info.j] = ft_strdup(tab[i]);
+			info.j++;
+		}
 		i++;
 	}
-	i = 0;
-	while (i < nb)
-	{
-		lstat(tab[i], &st);
-		if ((S_ISDIR(st.st_mode)))
-			tab2[++j] = ft_strdup(tab[i]);
-		i++;
-	}
+	clean_tab2(tab2, tab, op, info);
 	return (tab2);
 }
 
@@ -60,7 +78,7 @@ char	**sort_tab2(char **tab, t_option *op, int nb)
 		tab = sort_tab_bychange(tab);
 	if (op->rev == 1)
 		tab = rev_tab_end(tab, nb);
-	tab = clean_tab(tab, nb);
+	tab = clean_tab(tab, nb, op);
 	return (tab);
 }
 
