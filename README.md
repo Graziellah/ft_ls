@@ -22,3 +22,4 @@ Le programme s'utilise comme la commande ls
 ```
 ./ft_ls
 ```
+usage: ls [-lRartucFi] [file ...]
